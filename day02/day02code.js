@@ -14,12 +14,15 @@ let pointsbyGame = { lost: 0, draw: 3, win: 6 };
 
 let trans = { A: "rock", X: "rock", B: "paper", Y: "paper", C: "scissors", Z: "scissors" };
 
+let deTransMe = {rock: "X", paper: "Y", scissors: "Z"}
+
 function gameTotal(input) {
     let totalScore = 0;
     for (let game of input) {
-        let [opponent, me] = game;
+        let [opponent, result] = game;
+        let me = myPlay(opponent, result);
         let roundScore = round(opponent, me);
-        console.log(roundScore, "roundscore for game");
+        //console.log(roundScore, "roundscore for game");
         totalScore += roundScore;
     }
     return totalScore;
@@ -38,5 +41,25 @@ function round(opponent, me) {
     }
     return score;
 }
+
+function myPlay(opponent, result){
+    let myplay = "";
+    let opponentPlay = trans[opponent];
+    if(result === "X"){ //lose
+      myplay = rules[opponentPlay]; 
+      //console.log(myplay, opponentPlay, "Line 39")
+    } else if (result === "Y"){
+      myplay = opponentPlay;
+    } else{
+      for(const [key, value] of Object.entries(rules)){
+        if(value === opponentPlay){
+          myplay = key;
+        }
+      }
+      
+    }
+    return deTransMe[myplay];
+  }
+  
 
 console.log(gameTotal(lines));
