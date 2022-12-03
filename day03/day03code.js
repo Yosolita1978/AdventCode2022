@@ -3,9 +3,9 @@ const fs = require("fs");
 const lines = fs
     .readFileSync("inputday03.txt", { encoding: "utf-8" })
     .split("\n")
-    .map((line) => line.split(" "));
 
-//console.log(lines);
+
+console.log(lines);
 
 let lowerCase = { a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 9, j: 10, k: 11, l: 12, m: 13, n: 14, o: 15, p: 16, q: 17, r: 18, s: 19, t: 20, u: 21, v: 22, w: 23, x: 24, y: 25, z: 26 }
 
@@ -52,6 +52,73 @@ function helperCommonChar(string1, string2) {
   return duplicate;
 }
 
-console.log(findTotal(lines));
-//console.log(rucksackPriority(['jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL']))
-//console.log(helperCommonChar("vJrwpWtwJgWr", "hcsFMMfFFhFp" ));
+function createGroups(array) {
+    let groups = [];
+    for (let i = 0; i < array.length; i += 3) {
+      let temp = [array[i], array[i + 1], array[i + 2]];
+      groups.push(temp)
+    }
+  
+    return groups;
+  }
+  
+  function findCommonItem(firstElf, secondElf, thirdElf) {
+    let common = "";
+    let dictionary = {};
+    let firstElfSet = [... new Set(firstElf)];
+    let secondElfSet = [... new Set(secondElf)];
+    let thirdElfSet = [... new Set(thirdElf)];
+    for (letter of firstElfSet) {
+      if (!dictionary[letter]) {
+        dictionary[letter] = 1
+      }
+    }
+  
+    for (letter of secondElfSet) {
+      if (dictionary[letter]) {
+        dictionary[letter] += 1;
+      }
+    }
+  
+    for (letter of thirdElfSet) {
+      if (dictionary[letter]) {
+        dictionary[letter] += 1;
+      }
+    }
+  
+    for (const [key, value] of Object.entries(dictionary)) {
+      if (value === 3) {
+        common = key
+      }
+    }
+  
+    return common
+  }
+  
+  
+  function findPriority(letter) {
+    let priority = 0;
+    if (lowerCase.hasOwnProperty(letter)) {
+      priority = lowerCase[letter];
+    } else if (upperCase.hasOwnProperty(letter)) {
+      priority = upperCase[letter];
+    }
+  
+    return priority
+  
+  }
+  
+  function findTotalTwo() {
+    let groups = createGroups(lines);
+    let total = 0;
+    for (let group of groups) {
+      const [firstElf, secondElf, thirdElf] = group;
+      let common = findCommonItem(firstElf, secondElf, thirdElf);
+      let priority = findPriority(common);
+      total += priority
+    }
+    return total;
+  }
+
+  console.log(findTotalTwo())
+  
