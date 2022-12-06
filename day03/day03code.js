@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 const lines = fs
-    .readFileSync("inputday03.txt", { encoding: "utf-8" })
+    .readFileSync("inputexampleday03.txt", { encoding: "utf-8" })
     .split("\n")
 
 
